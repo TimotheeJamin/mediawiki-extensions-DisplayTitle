@@ -26,8 +26,6 @@
 	},
 	"Hooks": {
 		"ParserFirstCallInit": "DisplayTitleHooks::onParserFirstCallInit",
-		"ParserBeforeInternalParse": "DisplayTitleHooks::onParserBeforeInternalParse",
-		"ParserBeforePreprocess": "DisplayTitleHooks::onParserBeforeInternalParse",
 		"BeforePageDisplay": "DisplayTitleHooks::onBeforePageDisplay",
 		"PersonalUrls": "DisplayTitleHooks::onPersonalUrls",
 		"HtmlPageLinkRendererBegin": "DisplayTitleHooks::onHtmlPageLinkRendererBegin",

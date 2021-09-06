@@ -169,6 +169,7 @@ class DisplayTitleHooks {
 	/**
 	 * Implements BeforePageDisplay hook.
 	 * See https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
+	 * Handle talk page title
 	 * Display subtitle if requested
 	 *
 	 * @since 1.0
@@ -176,10 +177,26 @@ class DisplayTitleHooks {
 	 * @param Skin &$sk the Skin object
 	 */
 	public static function onBeforePageDisplay( OutputPage &$out, Skin &$sk ) {
+		$title = $out->getTitle();		
+		if ( $title !== null && $title->isTalkPage() &&
+			$title->getSubjectPage()->exists() ) {
+			$found = self::getDisplayTitle( $title->getSubjectPage(), $displaytitle );
+			if ( $found ) {// if DISPLAYTITLE is set
+				$displaytitle = wfMessage( 'displaytitle-talkpagetitle',
+					$displaytitle )->plain();
+					$out->setPageTitle( $displaytitle );     
+
+			}
+			else {
+				$displaytitle = wfMessage( 'displaytitle-talkpagetitle',
+					$title->getSubjectPage() )->plain();
+					$out->setPageTitle( $displaytitle );
+			}
+		}
+
 		if ( $GLOBALS['wgDisplayTitleHideSubtitle'] ) {
 			return;
 		}
-		$title = $out->getTitle();
 		if ( !$title->isTalkPage() ) {
 			$found = self::getDisplayTitle( $title, $displaytitle );
 		} elseif ( $title->getSubjectPage()->exists() ) {
@@ -194,30 +211,6 @@ class DisplayTitleHooks {
 				$subtitle .= ' / ' . $old_subtitle;
 			}
 			$out->setSubtitle( $subtitle );
-		}
-	}
-
-	/**
-	 * Implements ParserBeforeInternalParse hook.
-	 * See https://www.mediawiki.org/wiki/Manual:Hooks/ParserBeforeInternalParse
-	 * Handle talk page title.
-	 *
-	 * @since 1.0
-	 * @param Parser $parser the Parser object
-	 * @param string &$text the text
-	 * @param StripState $strip_state the strip state
-	 */
-	public static function onParserBeforeInternalParse( Parser $parser, &$text,
-		$strip_state ) {
-		$title = $parser->getTitle();
-		if ( $title !== null && $title->isTalkPage() &&
-			$title->getSubjectPage()->exists() ) {
-			$found = self::getDisplayTitle( $title->getSubjectPage(), $displaytitle );
-			if ( $found ) {
-				$displaytitle = wfMessage( 'displaytitle-talkpagetitle',
-					$displaytitle )->plain();
-				$parser->getOutput()->setTitleText( $displaytitle );
-			}
 		}
 	}
 
