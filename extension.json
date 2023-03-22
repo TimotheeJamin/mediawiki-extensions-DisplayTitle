@@ -27,7 +27,7 @@
 	"Hooks": {
 		"ParserFirstCallInit": "DisplayTitleHooks::onParserFirstCallInit",
 		"BeforePageDisplay": "DisplayTitleHooks::onBeforePageDisplay",
-		"PersonalUrls": "DisplayTitleHooks::onPersonalUrls",
+		"SkinTemplateNavigation::Universal": "DisplayTitleHooks::onSkinTemplateNavigation__Universal",
 		"HtmlPageLinkRendererBegin": "DisplayTitleHooks::onHtmlPageLinkRendererBegin",
 		"ScribuntoExternalLibraries": "DisplayTitleHooks::onScribuntoExternalLibraries",
 		"SelfLinkBegin": "DisplayTitleHooks::onSelfLinkBegin"
